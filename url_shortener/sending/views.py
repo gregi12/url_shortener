@@ -26,12 +26,10 @@ def get_site(request):
 @api_view(["POST"])
 def add_site(request):
   if request.method == "POST":
-    if request.POST.get('url'):
-      url = request.POST.get('url')
-      letters = string.ascii_lowercase 
-      random_string = ''.join(random.choice(letters) for i in range(8))
-      url_instance = Url.objects.create(url=url,random_string=random_string)
-      return Response({'urls':url},safe=False)
+      serializer = UrlSerializer(data=request.data)
+      if serializer.is_valid():
+        serializer.save()
+        return Response({'urls':serializer.data})
          
          
          
